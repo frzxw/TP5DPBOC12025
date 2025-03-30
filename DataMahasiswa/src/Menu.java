@@ -86,12 +86,12 @@ public class Menu extends JFrame {
         kelasButtonGroup.add(kelasC2Button);
 
         // inisialisasi range untuk usiaSlider
-        usiaSlider.setMinimum(17);        // Nilai minimum usia
-        usiaSlider.setMaximum(25);        // Nilai maksimum usia
-        usiaSlider.setValue(18);          // Nilai default
+        usiaSlider.setMinimum(17); // Nilai minimum usia
+        usiaSlider.setMaximum(25); // Nilai maksimum usia
+        usiaSlider.setValue(18); // Nilai default
         usiaSlider.setMajorTickSpacing(1); // Tick utama setiap 1 tahun
-        usiaSlider.setPaintTicks(true);    // Tampilkan tick marks
-        usiaSlider.setPaintLabels(true);   // Tampilkan label pada tick
+        usiaSlider.setPaintTicks(true); // Tampilkan tick marks
+        usiaSlider.setPaintLabels(true); // Tampilkan label pada tick
 
         // sembunyikan button delete
         deleteButton.setVisible(false);
@@ -160,11 +160,17 @@ public class Menu extends JFrame {
 
     public void insertData() {
         // ambil data dari form
-        String nim = nimField.getText();
-        String nama = namaField.getText();
-        String jenisKelamin = jenisKelaminComboBox.getSelectedItem().toString();
+        String nim = nimField.getText().trim();
+        String nama = namaField.getText().trim();
+        String jenisKelamin = (String) jenisKelaminComboBox.getSelectedItem();
         int usia = usiaSlider.getValue();
-        String kelas = kelasC1Button.isSelected() ? "C1" : "C2";
+        String kelas = kelasC1Button.isSelected() ? "C1" : kelasC2Button.isSelected() ? "C2" : "";
+
+        // validasi input
+        if (nim.isEmpty() || nama.isEmpty() || jenisKelamin == null || kelas.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Harap isi semua field!", "Peringatan", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
 
         // query insert ke database
         String query = "INSERT INTO mahasiswa (nim, nama, jenis_kelamin, usia, kelas) VALUES (?, ?, ?, ?, ?)";
@@ -180,20 +186,26 @@ public class Menu extends JFrame {
             clearForm();
 
             // tampilkan notifikasi berhasil
-            JOptionPane.showMessageDialog(null, "data berhasil ditambahkan");
+            JOptionPane.showMessageDialog(null, "Data berhasil ditambahkan");
         } catch (Exception e) {
             e.printStackTrace();
-            JOptionPane.showMessageDialog(null, "error: gagal menambahkan data");
+            JOptionPane.showMessageDialog(null, "Error: Gagal menambahkan data");
         }
     }
 
     public void updateData() {
         // ambil data dari form
-        String nim = nimField.getText();
-        String nama = namaField.getText();
-        String jenisKelamin = jenisKelaminComboBox.getSelectedItem().toString();
+        String nim = nimField.getText().trim();
+        String nama = namaField.getText().trim();
+        String jenisKelamin = (String) jenisKelaminComboBox.getSelectedItem();
         int usia = usiaSlider.getValue();
-        String kelas = kelasC1Button.isSelected() ? "C1" : "C2";
+        String kelas = kelasC1Button.isSelected() ? "C1" : kelasC2Button.isSelected() ? "C2" : "";
+
+        // validasi input
+        if (nim.isEmpty() || nama.isEmpty() || jenisKelamin == null || kelas.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Harap isi semua field!", "Peringatan", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
 
         // query update ke database
         String query = "UPDATE mahasiswa SET nama=?, jenis_kelamin=?, usia=?, kelas=? WHERE nim=?";
@@ -209,10 +221,10 @@ public class Menu extends JFrame {
             clearForm();
 
             // tampilkan notifikasi berhasil
-            JOptionPane.showMessageDialog(null, "data berhasil diubah");
+            JOptionPane.showMessageDialog(null, "Data berhasil diubah");
         } catch (Exception e) {
             e.printStackTrace();
-            JOptionPane.showMessageDialog(null, "error: gagal mengubah data");
+            JOptionPane.showMessageDialog(null, "Error: Gagal mengubah data");
         }
     }
 
@@ -220,8 +232,7 @@ public class Menu extends JFrame {
         // tampilkan dialog konfirmasi
         int confirm = JOptionPane.showConfirmDialog(
                 null, "apakah anda yakin ingin menghapus data ini?",
-                "konfirmasi hapus", JOptionPane.YES_NO_OPTION
-        );
+                "konfirmasi hapus", JOptionPane.YES_NO_OPTION);
 
         // jika pengguna memilih "yes"
         if (confirm == JOptionPane.YES_OPTION) {
