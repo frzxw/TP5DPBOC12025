@@ -18,7 +18,7 @@ Saya Fariz Wibisono dengan NIM 2307589 mengerjakan Tugas Praktikum 5 dalam mata 
 
 Berikut adalah dokumentasi berupa rekaman hasil implementasi program:
 
-![Lihat Video](screenshots/demo.mp4)
+![Lihat Video](screenshots/demo.gif)
 
 ### Penjelasan Alur Program
 
